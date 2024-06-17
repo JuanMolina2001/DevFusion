@@ -31,7 +31,7 @@ class Terminal:
         self.process.write(data)
         return data
     def close(self):
-        del self.process
+        self.process = None
     def onData(self):
         return self.process.read()
 class Gemini:
