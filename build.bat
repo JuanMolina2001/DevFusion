@@ -1,1 +1,1 @@
-client - npm run build && pyinstaller --onefile --noconsole --icon=icon.ico --name=DevFusion --clean --add-data "src:src" app.py
+pyinstaller  --clean --noupx   --noconsole --icon=icon.ico --name=DevFusion  --add-data "src:src" --onefile app.py
