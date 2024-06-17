@@ -1,6 +1,7 @@
 import { useEffect, useState } from "preact/hooks"
 import { marked } from "marked"
 export default ({ hidden }) => {
+   const [apiKey, setApiKey] = useState()
    const [messages, setMessages] = useState([])
    const handleMessage = (message) => {
       return marked(message)
@@ -16,6 +17,25 @@ export default ({ hidden }) => {
             setMessages(prevMessages => [...prevMessages, { message: response, sender: 'Gemini' }]);
          });
       }
+   }
+   if (!apiKey) {
+      return(
+        <form className={`${hidden ? 'hidden' : 'flex'} flex-col h-full border-t border-[var(--opacity-color)] flex-1  justify-center  gap-3 px-10`} onSubmit={(e)=>{
+            e.preventDefault()
+            const data = new FormData(e.target)
+            const apiKey = data.get('apiKey')
+            pywebview.api.gemini.init(apiKey).then(()=>{
+                  setApiKey(apiKey)
+            })
+        }}>
+            <label htmlFor="apiKey">Enter your Gemini API Key</label>
+            <input required type="password" class="block w-full p-2  border border-[var(--opacity-color)] rounded-md bg-[var(--primary-color)]" name="apiKey" id="apiKey" />
+            <p>
+               if you don't have a Gemini API Key, you can get one by visiting <a target="_blank" className="text-slate-500" href="https://aistudio.google.com/app/apikey"> <b>Ai studio</b></a>
+            </p>
+           <button type="submit" class="bg-[var(--primary-color)] text-white p-2 rounded-md w-fit">Submit</button>
+        </form>
+      )
    }
    return (
       <div className={`${hidden ? 'hidden' : 'flex'} flex-col h-full border-t border-[var(--opacity-color)] flex-1 relative`} >

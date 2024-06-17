@@ -6,9 +6,6 @@ import os
 import google.generativeai as genai
 from winpty import PTY
 
-
-genai.configure(api_key=os.getenv("API_KEY"))
-model = genai.GenerativeModel('gemini-1.5-flash')
 current_dir = os.path.dirname(os.path.abspath(__file__))
 path = os.path.join(current_dir, 'src\\index.html')
 url = f'file:///{path}'
@@ -38,9 +35,17 @@ class Terminal:
     def onData(self):
         return self.process.read()
 class Gemini:
+    def __init__(self):
+        self.model = None
     def send(self, message):
-        response = model.generate_content(message)
+        response = self.model.generate_content(message)
         return response.text
+    def init(self, api_key):
+        genai.configure(api_key=api_key)
+        self.model = genai.GenerativeModel('gemini-1.5-flash')
+        return True
+    def close(self):
+        self.model = None
 class GitHub:
     def getUser(self):
         with open('src\\user.json', 'r') as archivo:
