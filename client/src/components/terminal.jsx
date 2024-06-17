@@ -6,34 +6,39 @@ export default ({ path }) => {
     const ref = useRef(null);
     const cols = 80;
     const rows = 17;
-    const term = new Terminal({
-        cols: cols,
-        rows: rows,
-    });
+ 
     useEffect(() => {
-
-        term.open(ref.current);
+        const term = new Terminal({
+            cols: cols,
+            rows: rows,
+        });
+        let terminalInitialized = false;
+    
         pywebview.api.terminal.create(cols, rows, path).then(() => {
+            term.open(ref.current);
             term.onData((data) => {
-                pywebview.api.terminal.write(data)
+                if (data) {
+                    pywebview.api.terminal.write(data);
+                }
             });
-
-            const fetchData = ()=>{
+            const handleData = () => {
                 pywebview.api.terminal.onData().then((data) => {
                     term.write(data);
+                    handleData();
                 });
-                requestAnimationFrame(fetchData);
+            };
+            if (!terminalInitialized) {
+                terminalInitialized = true;
+                handleData();
             }
-            
-            fetchData();
-
         });
-
+    
         return () => {
-            term.dispose();
+            term.dispose(); 
             pywebview.api.terminal.close();
         };
     }, [path]);
+    
 
     return (
             <div className='bg-black h-1/3 overflow-hidden col-span-3 row-span-1 border-r border-t border-b border-[var(--opacity-color)]' ref={ref}></div>
