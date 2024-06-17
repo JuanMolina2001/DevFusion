@@ -1,0 +1,1 @@
+virtualenv .env && activate && pip install -r requirements.txt
