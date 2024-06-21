@@ -4,43 +4,51 @@ import "@xterm/xterm/css/xterm.css";
 
 export default ({ path }) => {
     const ref = useRef(null);
-    const cols = 80;
-    const rows = 17;
- 
+
     useEffect(() => {
+        const { pty } = pywebview.api
         const term = new Terminal({
-            cols: cols,
-            rows: rows,
+            cursorBlink: true,
+            cursorStyle: 'block',
+            fontSize: 14,
+            fontFamily: 'Menlo, Monaco, Consolas, "Courier New", monospace',
         });
-        let terminalInitialized = false;
-    
-        pywebview.api.terminal.create(cols, rows, path).then(() => {
-            term.open(ref.current);
-            term.onData((data) => {
-                if (data) {
-                    pywebview.api.terminal.write(data);
-                }
-            });
-            const handleData = () => {
-                pywebview.api.terminal.onData().then((data) => {
+        term.open(ref.current);
+        pty.open(path).then(() => {
+            let content = '';
+            const onData = () => {
+                pty.onData().then(data => {
                     term.write(data);
-                    handleData();
+                    onData();
                 });
-            };
-            if (!terminalInitialized) {
-                terminalInitialized = true;
-                handleData();
             }
+
+            term.onData(data => {
+                if (data === '\x7F') {
+                    if (content.length > 0) {
+                        content = content.slice(0, -1);
+                        term.write('\b \b');
+                    }
+                } else {
+                    content += data;
+                    term.write(data);
+                }
+                if (data === '\r' || data.includes('\x1b')) {
+                    pty.write(content);
+                    content = '';
+                }
+
+            });
+            onData();
         });
-    
         return () => {
-            term.dispose(); 
-            pywebview.api.terminal.close();
+            term.dispose();
+            pty.close();
         };
     }, [path]);
-    
+
 
     return (
-            <div className='bg-black h-1/3 overflow-hidden col-span-3 row-span-1 border-r border-t border-b border-[var(--opacity-color)]' ref={ref}></div>
+        <div className='bg-black h-1/3 overflow-hidden col-span-3 row-span-1 border-r border-t border-b border-[var(--opacity-color)]' ref={ref}></div>
     );
 };

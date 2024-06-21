@@ -4,12 +4,11 @@ import subprocess
 import shutil
 import os
 import google.generativeai as genai
-from winpty import PTY
+from winpty import PtyProcess
 
 dirname = os.path.dirname(os.path.abspath(__file__))
-path = os.path.join(dirname, 'src\\index.html')
-
-window = webview.create_window('DevFusion',f'file:///{path}',maximized=True,resizable=True,min_size=(900,700))
+url = f'file:///{os.path.join(dirname, 'src\\index.html')}'
+window = webview.create_window('DevFusion','http://localhost:5173/',maximized=True,resizable=True,min_size=(900,700))
 
 class File:
    def open(self, path):    
@@ -20,20 +19,20 @@ class File:
          with open(path, 'w') as archivo:
               archivo.write(content)
          return True
-class Terminal:
+class  pty:
     def __init__(self):
         self.process = None
-    def create(self, cols, rows, cwd):
-        if cwd is None: cwd = Path.home()
-        self.process = PTY(cols, rows)
-        self.process.spawn(appname='C:\\windows\\system32\\cmd.exe', cwd=str(cwd))
-    def write(self, data):
-        self.process.write(data)
-        return data
-    def close(self):
-        del self.process
+    def open(self, cwd):
+        if cwd is None:
+            cwd = Path.home()
+        self.process = PtyProcess.spawn('cmd.exe', cwd=str(cwd))
     def onData(self):
         return self.process.read()
+    def write(self, data):
+        self.process.write(data)
+    def close(self):
+        if self.process is not None:
+            self.process.terminate()
 class Gemini:
     def __init__(self):
         self.model = genai.GenerativeModel('gemini-1.5-flash')
@@ -87,7 +86,7 @@ class Api:
         self.file = File()
         self.gitHub = GitHub()
         self.gemini = Gemini()
-        self.terminal = Terminal()
+        self.pty = pty()
     def defaultPath(self):
         return str(Path.home())
     def openFolder(self, path):
@@ -116,4 +115,4 @@ class Api:
 
 window._js_api = Api()
 
-webview.start() 
+webview.start(debug=True) 
