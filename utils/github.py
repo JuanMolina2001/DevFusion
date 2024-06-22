@@ -20,7 +20,10 @@ class GitHub:
         datos['gitHub'] = user
         with open('src\\user.json', 'w') as archivo:
             json.dump(datos, archivo, indent=4)
+        self.user = user
         return True
+    def close(self):
+        self.setUser(None)
     def download(self, url):
         if shutil.which('git') is None:
             return {
