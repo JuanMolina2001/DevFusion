@@ -1,0 +1,39 @@
+{
+    "gemini": {
+        "api_key": "AIzaSyDGQnq_vdaUXzktmCpmf9FaqBNfVVPwEFQ"
+    },
+    "gitHub": {
+        "login": "midudev",
+        "id": 1561955,
+        "node_id": "MDQ6VXNlcjE1NjE5NTU=",
+        "avatar_url": "https://avatars.githubusercontent.com/u/1561955?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/midudev",
+        "html_url": "https://github.com/midudev",
+        "followers_url": "https://api.github.com/users/midudev/followers",
+        "following_url": "https://api.github.com/users/midudev/following{/other_user}",
+        "gists_url": "https://api.github.com/users/midudev/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/midudev/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/midudev/subscriptions",
+        "organizations_url": "https://api.github.com/users/midudev/orgs",
+        "repos_url": "https://api.github.com/users/midudev/repos",
+        "events_url": "https://api.github.com/users/midudev/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/midudev/received_events",
+        "type": "User",
+        "site_admin": false,
+        "name": "Miguel \u00c1ngel Dur\u00e1n",
+        "company": null,
+        "blog": "https://twitch.tv/midudev",
+        "location": "Barcelona",
+        "email": null,
+        "hireable": null,
+        "bio": "Te ense\u00f1o Programaci\u00f3n y Desarrollo Web. Creador de contenido en Twitch y YouTube.",
+        "twitter_username": "midudev",
+        "public_repos": 183,
+        "public_gists": 11,
+        "followers": 25054,
+        "following": 2,
+        "created_at": "2012-03-21T18:31:36Z",
+        "updated_at": "2024-04-23T16:56:19Z"
+    }
+}

@@ -1,4 +1,5 @@
 @echo off
+
 IF "%1" EQU "start" (
     python app.py
 ) ELSE IF "%1" EQU "save" (
