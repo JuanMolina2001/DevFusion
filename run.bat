@@ -14,7 +14,7 @@ IF "%1" EQU "start" (
     .env\Scripts\deactivate.bat
 ) ELSE (
     echo Comando no reconocido. Por favor, usa uno de los siguientes:
-    echo run - Para ejecutar app.py
+    echo start - Para ejecutar app.py
     echo save - Para guardar las dependencias en requirements.txt
     echo install - Para instalar las dependencias de requirements.txt
     echo build - Para construir la aplicacion con PyInstaller
