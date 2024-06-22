@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "preact/hooks"
 import { Editor } from "@monaco-editor/react"
-
+import Query from "./query"
 
 export default ({ file, setFile, hidden }) => {
     const [language, setLanguage] = useState('plaintext')
     const [value, setValue] = useState('')
-    const { gemini } = pywebview.api
     const query = useRef(null)
     useEffect(() => {
+        console.log(query.current)
         if (file) {
             if (file.path.endsWith('.js')) {
                 setLanguage('javascript')
@@ -48,30 +48,7 @@ export default ({ file, setFile, hidden }) => {
                 query.current.querySelector('input').focus()
             }
         }}>
-            <form ref={query} className="absolute z-40 hidden rounded-md bg-[var(--bg)] flex-col p-2 gap-2 border-[var(--opacity-color)] border w-[500px]" onKeyDown={e => {
-                if (e.key === 'Escape') {
-                    query.current.style.display = 'none'
-                    query.current.querySelector('#answer').innerText = ''
-                    
-                }
-            }} onSubmit={(e) => {
-                e.preventDefault()
-                gemini.ask(e.target.query.value, value).then((response) => {
-                    e.target.querySelector('#answer').innerText =  response.answer
-                    setValue(response.code)
-                })
-            }}>
-                <div className="flex gap-2 w-full">
-                    <input className="bg-[var(--primary-color)] px-1 w-full" placeholder="Ask gemini" name="query" type="text" />
-                    <button className="material-icons">
-                        send
-                    </button>
-                </div>
-                <div id="answer">
-
-                </div>
-
-            </form>
+            <Query setValue={setValue} query={query} />
             <Editor
                 className="absolute top-0 left-0 w-full h-full"
                 theme="vs-dark"
