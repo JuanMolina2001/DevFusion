@@ -1,1 +1,0 @@
-pip install pywinpty && pip install pywebview && pip install pyinstaller &&  pip install  google-generativeai

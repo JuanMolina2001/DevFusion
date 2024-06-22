@@ -1,1 +1,0 @@
-pyinstaller  --clean --noupx   --noconsole --icon=icon.ico --name=DevFusion  --add-data "src:src" --onefile app.py

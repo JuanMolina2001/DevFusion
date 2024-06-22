@@ -12,11 +12,11 @@ window = webview.create_window('DevFusion','http://localhost:5173/',maximized=Tr
 
 class File:
    def open(self, path):    
-        with open(path, 'r') as archivo:
+        with open(path, 'r', encoding='utf-8') as archivo:
             contenido = archivo.read()  
         return str(contenido)
    def save(self, path, content):
-         with open(path, 'w') as archivo:
+         with open(path, 'w', encoding='utf-8') as archivo:
               archivo.write(content)
          return True
 class  pty:
